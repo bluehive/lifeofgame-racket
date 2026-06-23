@@ -6,10 +6,20 @@
 (require racket/gui/base)
 
 ;; -------------------------------------------------------------
+;; カラー設定 (Color Configuration)
+;; -------------------------------------------------------------
+(define COLOR-BACKGROUND "white")    ;; 画面の背景色
+(define COLOR-CELL "black")          ;; 生存セル（ブロック）の色
+(define COLOR-PADDLE "orange")       ;; パドルの色（視認性の高いオレンジ）
+(define COLOR-BALL "red")            ;; ボールの色
+(define COLOR-TEXT "black")          ;; スコア・ライフ表示の文字色
+(define COLOR-GAMEOVER "red")        ;; ゲームオーバー表示の文字色
+
+;; -------------------------------------------------------------
 ;; 定数と画面設定（以前の1.5倍の解像度に調整）
 ;; -------------------------------------------------------------
 (define WIDTH 40)          ;; ライフゲームのグリッド列数（横幅方向のセル数）
-(define HEIGHT 30)         ;; ライフゲームのグリッド行数（縦幅方向 of セル数）
+(define HEIGHT 30)         ;; ライフゲームのグリッド行数（縦幅方向のセル数）
 (define CELL-SIZE 24)      ;; 1セルのピクセルサイズ（1.5倍に拡大：16 -> 24）
 (define SCREEN-WIDTH (* WIDTH CELL-SIZE))   ;; GUI画面全体の幅（960ピクセル）
 (define SCREEN-HEIGHT (* HEIGHT CELL-SIZE))  ;; GUI画面全体の高さ（720ピクセル）
@@ -19,6 +29,8 @@
 (define PADDLE-HEIGHT 15)  ;; パドルの高さ（画面拡大に合わせて調整）
 ;; パドルをGUI画面下部から少し離した位置（下から50ピクセル上）に配置
 (define PADDLE-Y (- SCREEN-HEIGHT PADDLE-HEIGHT 50))
+
+(define PADDLE-SPEED 11)   ;; パドルの移動速度（元の速度 9 の 1.2倍： 10.8 -> 11）
 
 ;; -------------------------------------------------------------
 ;; ライフゲームのコアロジック (不変リストスタイル)
@@ -211,9 +223,9 @@
             [release-code (send event get-key-release-code)])
         (cond
           ;; 左矢印キーで左方向への移動速度を設定
-          [(eq? code 'left) (set! paddle-vx -9)]
+          [(eq? code 'left) (set! paddle-vx (- PADDLE-SPEED))]
           ;; 右矢印キーで右方向への移動速度を設定
-          [(eq? code 'right) (set! paddle-vx 9)]
+          [(eq? code 'right) (set! paddle-vx PADDLE-SPEED)]
           ;; スペースキーで発射、またはゲームオーバー時のリスタート
           [(eq? code #\space)
            (if game-over?
@@ -231,12 +243,12 @@
        [paint-callback
         (lambda (canvas dc)
           ;; チラつき防止（ダブルバッファ）を利用した描画処理
-          (send dc set-background (make-object color% "white"))
+          (send dc set-background (make-object color% COLOR-BACKGROUND))
           (send dc clear)
           
-          ;; 1. 生存セル（ブロック）の描画（黒い四角形）
-          (send dc set-brush (make-object color% "black") 'solid)
-          (send dc set-pen (make-object color% "black") 1 'solid)
+          ;; 1. 生存セル（ブロック）の描画（指定色）
+          (send dc set-brush (make-object color% COLOR-CELL) 'solid)
+          (send dc set-pen (make-object color% COLOR-CELL) 1 'solid)
           (for-each
            (lambda (cell)
              (let ([x (car cell)] [y (cdr cell)])
@@ -249,24 +261,24 @@
                        CELL-SIZE))))
            current-cells)
           
-          ;; 2. パドルの描画（指定通り見えやすいオレンジ色に変更）
-          (send dc set-brush (make-object color% "orange") 'solid)
-          (send dc set-pen (make-object color% "orange") 1 'solid)
+          ;; 2. パドルの描画（指定色）
+          (send dc set-brush (make-object color% COLOR-PADDLE) 'solid)
+          (send dc set-pen (make-object color% COLOR-PADDLE) 1 'solid)
           (send dc draw-rectangle paddle-x PADDLE-Y PADDLE-WIDTH PADDLE-HEIGHT)
           
-          ;; 3. ボールの描画（赤い四角形）
-          (send dc set-brush (make-object color% "red") 'solid)
-          (send dc set-pen (make-object color% "red") 1 'solid)
+          ;; 3. ボールの描画（指定色）
+          (send dc set-brush (make-object color% COLOR-BALL) 'solid)
+          (send dc set-pen (make-object color% COLOR-BALL) 1 'solid)
           (send dc draw-rectangle ball-x ball-y BALL-SIZE BALL-SIZE)
           
           ;; 4. スコア、ライフ、操作情報の描画
-          (send dc set-text-foreground (make-object color% "black"))
+          (send dc set-text-foreground (make-object color% COLOR-TEXT))
           (send dc draw-text (string-append "SCORE: " (number->string score)) 15 15)
           (send dc draw-text (string-append "LIVES: " (number->string lives)) 150 15)
           
           ;; ゲームオーバー状態のテキスト表示
           (when game-over?
-            (send dc set-text-foreground (make-object color% "red"))
+            (send dc set-text-foreground (make-object color% COLOR-GAMEOVER))
             (send dc draw-text "GAME OVER - Press SPACE to Restart"
                   (- (/ SCREEN-WIDTH 2) 130)
                   (- (/ SCREEN-HEIGHT 2) 10))))]))
