@@ -1,8 +1,20 @@
 # lifeofgame-racket
 
-A pure functional, GUI-based implementation of **Conway's Game of Life** written in Racket.
+A pure functional, GUI-based implementation of **Conway's Game of Life** written in Racket.  
+Racket言語で記述された、純粋関数型・GUIベースの**ライフゲーム（Conway's Game of Life）**の実装です。
 
-## Features
+---
+
+## Authors / 作成者
+
+- **Mevius** (GitHub: [@bluehive](https://github.com/bluehive)) - Learning Scheme & Racket, Requirement Definition / 企画・要件定義・学習
+- **Antigravity** (AI Assistant by Google DeepMind) - Coding, Refactoring, & Explanation / 設計・実装・解説・リファクタリング
+
+---
+
+## English Version
+
+### Features
 
 1. **Pure Functional Style (Scheme-like)**:
    - Avoids mutable arrays or arrays updates (`vector-set!`).
@@ -21,7 +33,7 @@ A pure functional, GUI-based implementation of **Conway's Game of Life** written
 
 ---
 
-## How to Run
+### How to Run
 
 Ensure you have **Racket** installed on your system. Run the script directly from your terminal or command prompt:
 
@@ -33,10 +45,53 @@ Alternatively, open the file `lifeofgame-racket.rkt` in **DrRacket** and click t
 
 ---
 
-## Code Concepts Explained (Scheme/Functional constructs used)
+### Code Concepts Explained (Scheme/Functional constructs used)
 
 - **`lambda`**: Anonymous functions created on the fly. Used for quick, local functions without global bindings.
 - **`filter`**: Extracts items from a list that satisfy a predicate function. Used to clean coordinates or evaluate active cells.
 - **`append-map`**: Maps a function returning lists over a list, and flattens (appends) the resulting list-of-lists. Used to collect neighbor candidates of all alive cells.
 - **`remove-duplicates`**: Drops duplicate coordinate pairs to form a clean set of candidate coordinates for the next generation.
 - **`for-each`**: Applies a function to all elements of a list for side-effects (e.g., drawing shapes on the GUI canvas) rather than constructing a new list.
+
+---
+
+## 日本語版
+
+### 特徴
+
+1. **純粋関数型スタイル (Scheme風)**:
+   - 配列の直接更新 (`vector-set!`) などの破壊的操作を一切行いません。
+   - 盤面（グリッド）の状態を、現在生きているセルの座標ペア `(x . y)` のリストのみで表現する不変（イミュータブル）な設計です。
+   - 再帰およびLisp/Schemeの基本関数（`map`, `filter`, `lambda`, `for-each`）を最大限活用しています。
+
+2. **無限平面のサポート (理論上)**:
+   - 盤面の状態が「生存セルの座標の集合」として表現されるため、ライフゲームの計算コア自体はグリッドの幅や高さの制限を受けず、理論上無限の平面で計算可能です。画面外の境界チェックはGUI描画時にのみ適用されます。
+
+3. **GUIによる可視化**:
+   - Racket標準の `racket/gui/base` ライブラリを使用しています。
+   - 実行すると自動的にグラフィカルウィンドウが開き、REPLやコンソール出力を汚すことなく、設定した間隔（デフォルト: 300ms）で滑らかにアニメーション表示されます。
+
+4. **4つのグライダー初期配置**:
+   - 初期状態で4つのグライダーが配置されており、それぞれが移動して衝突や安定パターンの形成を行う様子を観察できます。
+
+---
+
+### 実行方法
+
+マシンに **Racket** がインストールされていることを確認し、ターミナルからスクリプトを直接実行します。
+
+```bash
+racket lifeofgame-racket.rkt
+```
+
+または、**DrRacket** で `lifeofgame-racket.rkt` を開き、画面右上の **Run（実行）** ボタンをクリックします。「Life of Game」というタイトルのウィンドウが開き、シミュレーションが自動的に開始されます。
+
+---
+
+### 使用している関数の解説（Scheme/関数型の基礎概念）
+
+- **`lambda`**: その場で使い捨てるための「無名関数」を作ります。一度しか使わない処理を一時的に定義するのに便利です。
+- **`filter`**: リストから、指定した条件（真偽値を返す関数）に合致する要素だけを抽出して新しいリストを作ります。生存セルのフィルタリングなどに使用しています。
+- **`append-map`**: リストの各要素に関数を適用して得られた「リストのリスト」を平坦化（flatten）して1つの平らなリストに結合します。全生存セルの周囲の座標リストを合体させるために使っています。
+- **`remove-duplicates`**: リストから重複する要素を取り除き、ユニークな値のみを返します。次世代で生存/誕生の判定対象となるセルの重複を取り除くのに使っています。
+- **`for-each`**: `map` に似ていますが、新しいリストを作るためではなく、画面への描画やコンソール出力といった「副作用（手続き）」をリストの要素に順番に実行するために使います。
