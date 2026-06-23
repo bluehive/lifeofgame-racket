@@ -1,7 +1,12 @@
 # lifeofgame-racket
 
-A pure functional, GUI-based implementation of **Conway's Game of Life** written in Racket.  
-Racket言語で記述された、純粋関数型・GUIベースの**ライフゲーム（Conway's Game of Life）**の実装です。
+This repository contains two Racket GUI programs:
+1. **Conway's Game of Life** (`lifeofgame-racket.rkt`): A pure functional implementation.
+2. **Breakout Game of Life** (`breakout-lifeofgame.rkt`): A breakout game where blocks are active gliders from the Game of Life.
+
+本リポジトリには、RacketのGUIで動く2つのプログラムが含まれています。
+1. **ライフゲーム** (`lifeofgame-racket.rkt`): 純粋関数型で実装されたライフゲーム。
+2. **ブロック崩しライフゲーム** (`breakout-lifeofgame.rkt`): ライフゲームの生存セル（グライダー）をブロックに見立てて崩すブロック崩しゲーム。
 
 ---
 
@@ -35,10 +40,18 @@ Racket言語で記述された、純粋関数型・GUIベースの**ライフゲ
 
 ### How to Run
 
-Ensure you have **Racket** installed on your system. Run the script directly from your terminal or command prompt:
+Ensure you have **Racket** installed on your system. 
 
+#### 1. Conway's Game of Life
+Run the simulation directly:
 ```bash
 racket lifeofgame-racket.rkt
+```
+
+#### 2. Breakout Game of Life
+Run the breakout game (Move paddle with Left/Right arrows, press Space to shoot/restart):
+```bash
+racket breakout-lifeofgame.rkt
 ```
 
 Alternatively, open the file `lifeofgame-racket.rkt` in **DrRacket** and click the **Run** button. A graphical window titled "Life of Game" will pop up and run the simulation automatically.
@@ -78,10 +91,17 @@ Alternatively, open the file `lifeofgame-racket.rkt` in **DrRacket** and click t
 
 ### 実行方法
 
-マシンに **Racket** がインストールされていることを確認し、ターミナルからスクリプトを直接実行します。
+マシンに **Racket** がインストールされていることを確認し、ターミナルからスクリプトを実行します。
 
+#### 1. ライフゲーム単体
 ```bash
 racket lifeofgame-racket.rkt
+```
+
+#### 2. ブロック崩しライフゲーム
+左右矢印キーでパドルを操作し、スペースキーでボールを発射（またはゲームオーバー時の再起動）します。
+```bash
+racket breakout-lifeofgame.rkt
 ```
 
 または、**DrRacket** で `lifeofgame-racket.rkt` を開き、画面右上の **Run（実行）** ボタンをクリックします。「Life of Game」というタイトルのウィンドウが開き、シミュレーションが自動的に開始されます。
