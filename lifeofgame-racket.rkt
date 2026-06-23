@@ -4,6 +4,8 @@
 ;; See LICENSE file in the project root for full license text.
 (require racket/gui/base)
 
+(provide (all-defined-out))
+
 ;; グリッドのサイズ
 (define WIDTH 30)
 (define HEIGHT 20)
@@ -121,6 +123,7 @@
           (send canvas refresh))]
        [interval 300]))
 
-;; 実行開始
-(send frame show #t)
-(send timer start 300)
+;; 実行開始 (直接実行された場合のみGUIを起動する)
+(module+ main
+  (send frame show #t)
+  (send timer start 300))
