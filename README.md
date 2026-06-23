@@ -95,3 +95,10 @@ racket lifeofgame-racket.rkt
 - **`append-map`**: リストの各要素に関数を適用して得られた「リストのリスト」を平坦化（flatten）して1つの平らなリストに結合します。全生存セルの周囲の座標リストを合体させるために使っています。
 - **`remove-duplicates`**: リストから重複する要素を取り除き、ユニークな値のみを返します。次世代で生存/誕生の判定対象となるセルの重複を取り除くのに使っています。
 - **`for-each`**: `map` に似ていますが、新しいリストを作るためではなく、画面への描画やコンソール出力といった「副作用（手続き）」をリストの要素に順番に実行するために使います。
+
+---
+
+## License / ライセンス
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.  
+このプロジェクトはMITライセンスの下で公開されています。詳細は [LICENSE](LICENSE) ファイルをご覧ください。

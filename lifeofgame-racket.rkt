@@ -1,4 +1,7 @@
 #lang racket
+;; Copyright (c) 2026 mevius
+;; Licensed under the MIT License.
+;; See LICENSE file in the project root for full license text.
 (require racket/gui/base)
 
 ;; グリッドのサイズ
@@ -17,7 +20,7 @@
 (define (alive? cells cell)
   (and (member cell cells) #t))
 
-;; あるセルの周囲8方向 of 座標ペアリストを返す
+;; あるセルの周囲8方向の座標ペアリストを返す
 (define (cell-neighbors cell)
   (let ([x (car cell)] [y (cdr cell)])
     (list (cons (- x 1) (- y 1)) (cons x (- y 1)) (cons (+ x 1) (- y 1))
